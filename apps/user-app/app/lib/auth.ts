@@ -7,12 +7,12 @@ export const authOptions = {
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
-                number: { label: "Phone Number", type: "text", placeholder: "1231231231" },
-                password: { label: "Password", type: "password", placeholder: "password" }
+                number: { label: "Phone Number", type: "text", placeholder: "1231231231", required: true },
+                password: { label: "Password", type: "password", placeholder: "password", required: true }
             },
             async authorize(credentials: any) {
-                const hashedPassword = bcrypt.hash(credentials.password, 10)
-                const existingUser = db.user.findFirst({
+                const hashedPassword = await bcrypt.hash(credentials.password, 10)
+                const existingUser = await db.user.findFirst({
                     where: {
                         number: credentials.phone
                     }
