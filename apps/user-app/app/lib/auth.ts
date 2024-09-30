@@ -1,0 +1,60 @@
+import db from "@repo/db/client";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+
+export const authOptions = {
+    providers: [
+        CredentialsProvider({
+            name: 'Credentials',
+            credentials: {
+                number: { label: "Phone Number", type: "text", placeholder: "1231231231" },
+                password: { label: "Password", type: "password", placeholder: "password" }
+            },
+            async authorize(credentials: any) {
+                const hashedPassword = bcrypt.hash(credentials.password, 10)
+                const existingUser = db.user.findFirst({
+                    where: {
+                        number: credentials.phone
+                    }
+                });
+                if (existingUser) {
+                    const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password)
+                    if (passwordValidation) {
+                        return {
+                            id: existingUser.id.toString(),
+                            name: existingUser.name,
+                            email: existingUser.number
+                        }
+                    }
+                    return null
+                }
+
+                try {
+                    const user = await db.user.create({
+                        data: {
+                            number: credentials.number,
+                            password: hashedPassword
+                        }
+                    });
+                    return {
+                        id: user.id.toString(),
+                        name: user.name,
+                        email: user.number
+                    }
+
+                } catch (err) {
+                    console.log(err)
+                }
+                return null;
+            }
+        })
+    ],
+    secret: process.env.JWT_SECRET || "secret",
+    callbacks: {
+        async session({ token, session }: any) {
+            session.user.id = token.sub
+
+            return session
+        }
+    }
+}
