@@ -1,6 +1,6 @@
 import { Card } from "@repo/ui/card"
 
-export const onRampTransactions = ({ transactions }: {
+export const OnRampTransactions = ({ transactions }: {
     transactions: {
         time: Date,
         amount: number,
