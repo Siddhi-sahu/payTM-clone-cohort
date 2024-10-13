@@ -1,10 +1,9 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
 
 async function getBalance() {
     const session = await getServerSession(authOptions);
@@ -50,10 +49,8 @@ export default async function () {
                 <BalanceCard amount={balance.amount} locked={balance.locked} />
                 <div className="pt-4">
                     <OnRampTransactions transactions={transactions} />
-
                 </div>
             </div>
         </div>
-
     </div>
 }
