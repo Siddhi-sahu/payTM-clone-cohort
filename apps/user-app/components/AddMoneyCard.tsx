@@ -7,9 +7,11 @@ import { useState } from "react"
 import { createOnRampTransactions } from "../app/lib/actions/createOnRampTxns"
 
 const SUPPORTED_BANKS = [{
+    // key: 1,
     name: "HDFC Bank",
     redirectUrl: "https://netbanking.hdfcbank.com"
 }, {
+    // key: 2,
     name: "Axis Bank",
     redirectUrl: "https://www.axisbank.com/"
 }]
