@@ -22,6 +22,6 @@
     "packages/*"
   ],
   "prisma": {
-    "schema": "prisma/schema.prisma"
+    "schema": "packages/db/prisma/schema.prisma"
   }
 }
